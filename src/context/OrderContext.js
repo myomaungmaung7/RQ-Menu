@@ -18,7 +18,13 @@ const STATUS_FLOW = [
 
 function getTableFromUrl() {
   const params = new URLSearchParams(window.location.search);
-  const table = Number(params.get("table"));
+  const queryTable = params.get("table");
+  const pathSegments = window.location.pathname.split("/").filter(Boolean);
+  const pathTable = pathSegments[pathSegments.length - 1];
+
+  const rawTable = queryTable || pathTable;
+  const table = Number(rawTable);
+
   return Number.isFinite(table) && table > 0 ? table : RESTAURANT.defaultTable;
 }
 
