@@ -5,21 +5,21 @@ import { useOrder } from "../context/OrderContext";
 import MenuItemCard from "./MenuItemCard";
 
 export default function MenuPage() {
-    const { menuItems, setCustomizeItem, tableNumber } = useOrder(); // Access the order context
-    const [ category, setCategory ] = useState("all"); // State to hold the selected category
-    const [ query, setQuery ] = useState(""); // State to hold the search query
+  const { menuItems, setCustomizeItem, tableNumber } = useOrder(); // Access the order context
+  const [category, setCategory] = useState("all"); // State to hold the selected category
+  const [query, setQuery] = useState(""); // State to hold the search query
 
-    const filtered = useMemo(() => {
-      const q = query.trim().toLowerCase();
-      return menuItems.filter((item) => {
-        const matchesCategory =  category === "all" ||
-          (category === "popular" && item.popular) ||
-          item.category === category;
-        const matchesQuery = !q || item.name.toLowerCase().includes(q) ||
-          item.description.toLowerCase().includes(q);
-        return matchesCategory && matchesQuery;
-      });
-    }, [menuItems, category, query]);
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return menuItems.filter((item) => {
+      const matchesCategory = category === "all" ||
+        (category === "popular" && item.popular) ||
+        item.category === category;
+      const matchesQuery = !q || item.name.toLowerCase().includes(q) ||
+        item.description.toLowerCase().includes(q);
+      return matchesCategory && matchesQuery;
+    });
+  }, [menuItems, category, query]);
 
   return (
     <div className="pb-28">
@@ -54,11 +54,10 @@ export default function MenuPage() {
               key={cat.id}
               type="button"
               onClick={() => setCategory(cat.id)}
-              className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium ${
-                active
-                  ? "bg-forest-800 text-cream-50"
-                  : "bg-white text-forest-800 ring-1 ring-cream-300"
-              }`}
+              className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium ${active
+                ? "bg-forest-800 text-cream-50"
+                : "bg-white text-forest-800 ring-1 ring-cream-300"
+                }`}
             >
               {cat.label}
             </button>

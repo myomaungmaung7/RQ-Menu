@@ -48,9 +48,8 @@ export default function BottomBar() {
             if (hasActiveDining) requestBill();
             else setView("status");
           }}
-          className={`flex flex-col items-center rounded-xl py-1.5 text-[11px] font-medium ${
-            billRequested ? "text-forest-600" : "text-forest-800/70"
-          }`}
+          className={`flex flex-col items-center rounded-xl py-1.5 text-[11px] font-medium ${billRequested ? "text-forest-600" : "text-forest-800/70"
+            }`}
         >
           <Receipt size={18} />
           Bill
@@ -65,9 +64,8 @@ function TabButton({ active, onClick, icon: Icon, label }) {
     <button
       type="button"
       onClick={onClick}
-      className={`flex flex-col items-center rounded-xl py-1.5 text-[11px] font-medium ${
-        active ? "bg-cream-200 text-forest-900" : "text-forest-800/70"
-      }`}
+      className={`flex flex-col items-center rounded-xl py-1.5 text-[11px] font-medium ${active ? "bg-cream-200 text-forest-900" : "text-forest-800/70"
+        }`}
     >
       <Icon size={18} />
       {label}

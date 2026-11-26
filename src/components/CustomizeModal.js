@@ -74,11 +74,10 @@ export default function CustomizeModal() {
                       key={level.id}
                       type="button"
                       onClick={() => setSpice(level.id)}
-                      className={`rounded-2xl border px-2 py-3 text-center ${
-                        active
+                      className={`rounded-2xl border px-2 py-3 text-center ${active
                           ? "border-forest-800 bg-forest-800 text-cream-50"
                           : "border-cream-300 bg-white text-forest-800"
-                      }`}
+                        }`}
                     >
                       <span className="block text-sm font-semibold">{level.label}</span>
                       <span className={`mt-0.5 block text-[10px] ${active ? "text-cream-200" : "text-forest-700/60"}`}>

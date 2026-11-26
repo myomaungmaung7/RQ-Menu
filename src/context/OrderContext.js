@@ -114,30 +114,51 @@ export function OrderProvider({ children }) {
     [orderedItems]
   );
 
-  const placeOrder = useCallback(() => {
+  const placeOrder = useCallback(async () => {
     if (!cart.length) return;
-    const newOrder = {
-      id: `ORD-${Date.now().toString().slice(-6)}`,
-      placedAt: new Date().toISOString(),
-      items: cart,
-      total: cartTotal,
-    };
-    setOrders((prev) => [...prev, newOrder]);
-    setCart([]);
-    setCartOpen(false);
-    setBillRequested(false);
-    setOrderStatus("sent");
-    setView("status");
-  }, [cart, cartTotal]);
 
-  useEffect(() => {
-    if (!orders.length) return undefined;
-    setOrderStatus("sent");
-    const timers = STATUS_FLOW.filter((step) => step.delay > 0).map((step) =>
-      window.setTimeout(() => setOrderStatus(step.id), step.delay)
-    );
-    return () => timers.forEach((id) => window.clearTimeout(id));
-  }, [orders.length]);
+    const payload = {
+      tableNumber: String(tableNumber),
+      items: cart.map((line) => ({
+        itemId: line.itemId,
+        quantity: line.qty,
+        spice: line.spice,
+        note: line.note,
+      })),
+    };
+
+    try {
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.message || "Failed to place order");
+      }
+
+      const savedOrder = await res.json();
+
+      const newOrder = {
+        id: savedOrder.id ? `ORD-${savedOrder.id}` : `ORD-${Date.now().toString().slice(-6)}`,
+        placedAt: new Date().toISOString(),
+        items: cart,
+        total: savedOrder.totalAmount ? Number(savedOrder.totalAmount) : cartTotal,
+      };
+
+      setOrders((prev) => [...prev, newOrder]);
+      setCart([]);
+      setCartOpen(false);
+      setrequestBill(false);
+      setOrderStatus("sent");
+      setView("status");
+      showToast(`Table ${tableNumber} order placed`);
+    } catch (error) {
+      showToast(err.message || "Could not place order");
+    }
+  }, [cart, cartTotal, tableNumber, showToast]);
 
   const requestBill = useCallback(() => {
     setBillRequested(true);
