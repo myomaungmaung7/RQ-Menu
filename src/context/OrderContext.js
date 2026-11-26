@@ -10,6 +10,8 @@ import { MENU_ITEMS, RESTAURANT } from "../data/menu";
 
 const OrderContext = createContext(null);
 
+const API_BASE_URL = (process.env.REACT_APP_API_URL || "").replace(/\/+$/, "");
+
 const STATUS_FLOW = [
   { id: "sent", label: "Order sent to kitchen", delay: 0 },
   { id: "preparing", label: "Preparing", delay: 3500 },
@@ -128,7 +130,7 @@ export function OrderProvider({ children }) {
     };
 
     try {
-      const res = await fetch("/api/orders", {
+      const res = await fetch(`${API_BASE_URL}/api/orders`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
