@@ -155,7 +155,7 @@ export function OrderProvider({ children }) {
       setOrderStatus("sent");
       setView("status");
       showToast(`Table ${tableNumber} order placed`);
-    } catch (error) {
+    } catch (err) {
       showToast(err.message || "Could not place order");
     }
   }, [cart, cartTotal, tableNumber, showToast]);
