@@ -151,7 +151,7 @@ export function OrderProvider({ children }) {
       setOrders((prev) => [...prev, newOrder]);
       setCart([]);
       setCartOpen(false);
-      setBillRequested(false);
+      // setBillRequested(false);
       setOrderStatus("sent");
       setView("status");
       showToast(`Table ${tableNumber} order placed`);
